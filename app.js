@@ -22,6 +22,18 @@ let todos = [
 //   - 힌트: req.query.completed 는 문자열 "true" / "false" 로 들어와요!
 //          (=== true 로 비교하면 항상 false 가 나오니 주의)
 //
+//   📦 응답 형식 예시 (200 OK)
+//      [
+//        { "id": 1, "title": "운동하기",          "completed": false },
+//        { "id": 2, "title": "책 읽기",           "completed": true  },
+//        { "id": 3, "title": "Express 공부하기",   "completed": false }
+//      ]
+//
+//   📦 ?completed=true 응답 예시 (200 OK)
+//      [
+//        { "id": 2, "title": "책 읽기", "completed": true }
+//      ]
+//
 // 작성 위치: 여기 아래에 app.get('/todos', ...) 코드를 작성해 주세요.
 
 
@@ -31,6 +43,12 @@ let todos = [
 //     예) "1" === 1  →  false
 //         1   === 1  →  true
 //   - 못 찾으면 res.status(404).json({ message: '...' }) 형태로 404 응답.
+//
+//   📦 성공 응답 예시 (200 OK)  — GET /todos/1 요청 시
+//      { "id": 1, "title": "운동하기", "completed": false }
+//
+//   📦 실패 응답 예시 (404 Not Found)  — GET /todos/999 요청 시
+//      { "message": "id 999 인 할 일을 찾을 수 없어요." }
 //
 // 작성 위치: 여기 아래에 app.get('/todos/:id', ...) 코드를 작성해 주세요.
 
