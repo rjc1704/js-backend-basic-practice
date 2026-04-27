@@ -15,8 +15,11 @@ connectDB();
 // 기존 todos 배열은 완전히 삭제했어요!
 // 이제 데이터는 MongoDB 에서 가져옵니다.
 //
+// 🌱 시작하기 전에 `npm run seed` 를 한 번 실행해서 샘플 데이터를 채워두세요.
+//    (실습#5 에서 만든 seed.js 가 5개의 todo 를 DB 에 넣어줍니다)
+//
 // ⚠️ 중요한 변화:
-//   - id 가 더 이상 숫자(1, 2, 3) 가 아니라 ObjectId 문자열이에요.
+//   - id 가 더 이상 nanoid(짧은 문자열) 가 아니라 MongoDB 의 ObjectId 문자열이에요.
 //     예) "65f1a2b3c4d5e6f7a8b9c0d1"
 //   - DB 작업은 모두 비동기(async) 라서 await 가 필요해요.
 //   - DB 작업은 에러가 날 수 있으니 반드시 try-catch 로 감싸세요!
