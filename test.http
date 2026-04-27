@@ -1,61 +1,50 @@
 ### baseUrl 변수 — 나중에 배포 주소로 바꿀 때 이 한 줄만 수정하면 돼요!
 @baseUrl = http://localhost:3000
 
+### todoId 변수 — POST 응답에서 _id 값을 복사해서 여기에 붙여넣고 사용하세요.
+###   ⚠️ id 가 더 이상 숫자가 아니라 MongoDB ObjectId 문자열입니다!
+@todoId = 여기에_ObjectId를_붙여넣으세요
+
 ### ─────────────────────────────────────────────────
-### 실습#1: GET 엔드포인트 (✅ 완료)
+### 실습#6: MongoDB 기반 CRUD 테스트
 ### ─────────────────────────────────────────────────
 
 ### 전체 할 일 목록 조회
 GET {{baseUrl}}/todos
 
-### 단일 항목 조회 (존재하는 id)
-GET {{baseUrl}}/todos/1
-
-### 단일 항목 조회 (존재하지 않는 id) → 404 확인
-GET {{baseUrl}}/todos/999
-
 ### 완료된 항목만 필터링
 GET {{baseUrl}}/todos?completed=true
 
-### 완료되지 않은 항목만 필터링
-GET {{baseUrl}}/todos?completed=false
+### 단일 항목 조회 (먼저 POST 한 후 _id 복사해서 위 @todoId 수정)
+GET {{baseUrl}}/todos/{{todoId}}
 
+### 잘못된 id 형식으로 요청 → 400 확인
+GET {{baseUrl}}/todos/이건_잘못된_id
 
-### ─────────────────────────────────────────────────
-### 실습#2: POST 엔드포인트 (✅ 완료)
-### ─────────────────────────────────────────────────
-
-### POST /todos — title 없이 요청 → 400 확인
+### 새 할 일 생성 (title 없이) → 400 확인
 POST {{baseUrl}}/todos
 Content-Type: application/json
 
 {}
 
-### POST /todos — title 포함해서 요청 → 201 + 새 항목 확인
+### 새 할 일 생성 → 201 확인 + 응답의 _id 를 위 @todoId 에 복사하세요!
 POST {{baseUrl}}/todos
 Content-Type: application/json
 
 {
-  "title": "새 할 일 추가하기"
+  "title": "MongoDB 로 투두리스트 만들기"
 }
 
+### 할 일 수정 (completed: true 로 변경)
+PATCH {{baseUrl}}/todos/{{todoId}}
+Content-Type: application/json
 
-### ─────────────────────────────────────────────────
-### 실습#3: PATCH & DELETE 테스트
-### ─────────────────────────────────────────────────
+{
+  "completed": true
+}
 
-### TODO 1: PATCH /todos/:id — completed: true 로 수정
-###   힌트: PATCH {{baseUrl}}/todos/1 + body: { "completed": true }
+### 할 일 삭제
+DELETE {{baseUrl}}/todos/{{todoId}}
 
-
-### TODO 2: PATCH /todos/:id — title 도 수정
-###   힌트: body 에 { "title": "수정된 제목" }
-
-
-### TODO 3: DELETE /todos/:id — 항목 삭제
-###   힌트: DELETE {{baseUrl}}/todos/1
-
-
-### TODO 4: 존재하지 않는 id로 PATCH/DELETE → 404 확인
-###   예: PATCH/DELETE /todos/999
-
+### 삭제 후 다시 조회 → 404 확인
+GET {{baseUrl}}/todos/{{todoId}}
