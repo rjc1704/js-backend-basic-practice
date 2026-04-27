@@ -60,6 +60,15 @@ app.get('/todos/:id', (req, res) => {
 //   - todos 배열에 push 하고, 201 상태코드와 함께 새 항목을 응답:
 //       res.status(201).json(newTodo);
 //
+//   📦 요청 body 예시
+//      { "title": "코딩 공부하기" }
+//
+//   📦 성공 응답 예시 (201 Created)
+//      { "id": 4, "title": "코딩 공부하기", "completed": false }
+//
+//   📦 실패 응답 예시 (400 Bad Request)  — title 이 없을 때
+//      { "message": "title은 필수입니다." }
+//
 // 작성 위치: 여기 아래에 app.post('/todos', ...) 코드를 작성해 주세요.
 
 
