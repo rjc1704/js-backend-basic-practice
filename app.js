@@ -1,6 +1,6 @@
-import { randomUUID } from 'node:crypto';
 import dotenv from 'dotenv';
 import express from 'express';
+import { nanoid } from 'nanoid';
 import connectDB from './db.js';
 
 // .env 파일 로드 (반드시 다른 코드보다 먼저!)
@@ -14,9 +14,9 @@ connectDB();
 
 // 임시 데이터 (실습#6에서 MongoDB 로 교체할 예정이에요!)
 let todos = [
-  { id: '11111111-1111-1111-1111-111111111111', title: '운동하기', completed: false },
-  { id: '22222222-2222-2222-2222-222222222222', title: '책 읽기', completed: true },
-  { id: '33333333-3333-3333-3333-333333333333', title: 'Express 공부하기', completed: false },
+  { id: 'V1StGXR8_Z5jdHi6B-myT', title: '운동하기', completed: false },
+  { id: 'Uakgb_J5m9g-0JDMbcJqL', title: '책 읽기', completed: true },
+  { id: 'lXKNaG4yDvCBOpMlLzGCp', title: 'Express 공부하기', completed: false },
 ];
 
 // ─────────────────────────────────────────────────────────────
@@ -57,7 +57,7 @@ app.post('/todos', (req, res) => {
     return res.status(400).json({ message: 'title은 필수입니다.' });
   }
 
-  const newTodo = { id: randomUUID(), title, completed: false };
+  const newTodo = { id: nanoid(), title, completed: false };
   todos.push(newTodo);
 
   res.status(201).json(newTodo);
