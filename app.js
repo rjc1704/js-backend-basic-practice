@@ -5,14 +5,15 @@ const PORT = 3000;
 
 // 임시 데이터 (실습#6에서 MongoDB로 교체할 예정이에요!)
 //
-// 💡 id 가 왜 UUID(긴 문자열) 인가요?
+// 💡 id 가 왜 짧은 영숫자 문자열 (nanoid) 인가요?
 //    숫자 id 는 데이터가 많아지면 충돌이 나거나 추측이 쉬워요.
-//    실무에서는 보통 UUID 같은 "절대 안 겹치는 고유 식별자"를 써요.
-//    실습#2 의 POST 에서 새 항목을 만들 때도 crypto.randomUUID() 로 UUID 를 생성합니다.
+//    실무에서는 보통 "절대 안 겹치는 고유 식별자"를 쓰는데,
+//    이번 실습에서는 가볍고 짧은 nanoid 를 사용합니다 (기본 21글자).
+//    실습#2 의 POST 에서 새 항목을 만들 때도 nanoid() 로 id 를 생성해요.
 let todos = [
-  { id: '11111111-1111-1111-1111-111111111111', title: '운동하기', completed: false },
-  { id: '22222222-2222-2222-2222-222222222222', title: '책 읽기', completed: true },
-  { id: '33333333-3333-3333-3333-333333333333', title: 'Express 공부하기', completed: false },
+  { id: 'V1StGXR8_Z5jdHi6B-myT', title: '운동하기', completed: false },
+  { id: 'Uakgb_J5m9g-0JDMbcJqL', title: '책 읽기', completed: true },
+  { id: 'lXKNaG4yDvCBOpMlLzGCp', title: 'Express 공부하기', completed: false },
 ];
 
 // ─────────────────────────────────────────────────────────────
@@ -29,14 +30,14 @@ let todos = [
 //
 //   📦 응답 형식 예시 (200 OK)
 //      [
-//        { "id": "11111111-1111-1111-1111-111111111111", "title": "운동하기",         "completed": false },
-//        { "id": "22222222-2222-2222-2222-222222222222", "title": "책 읽기",          "completed": true  },
-//        { "id": "33333333-3333-3333-3333-333333333333", "title": "Express 공부하기",  "completed": false }
+//        { "id": "V1StGXR8_Z5jdHi6B-myT", "title": "운동하기",         "completed": false },
+//        { "id": "Uakgb_J5m9g-0JDMbcJqL", "title": "책 읽기",          "completed": true  },
+//        { "id": "lXKNaG4yDvCBOpMlLzGCp", "title": "Express 공부하기",  "completed": false }
 //      ]
 //
 //   📦 ?completed=true 응답 예시 (200 OK)
 //      [
-//        { "id": "22222222-2222-2222-2222-222222222222", "title": "책 읽기", "completed": true }
+//        { "id": "Uakgb_J5m9g-0JDMbcJqL", "title": "책 읽기", "completed": true }
 //      ]
 //
 // 작성 위치: 여기 아래에 app.get('/todos', ...) 코드를 작성해 주세요.
@@ -44,12 +45,12 @@ let todos = [
 
 // TODO 2: GET /todos/:id
 //   - URL 파라미터로 받은 id 에 해당하는 할 일 한 개를 응답하세요.
-//   - id 는 UUID 문자열이에요. req.params.id 도 문자열로 들어오니
+//   - id 는 문자열(nanoid)이에요. req.params.id 도 문자열로 들어오니
 //     별도 변환 없이 그대로 비교하면 돼요. (=== 로 문자열끼리 비교)
 //   - 못 찾으면 res.status(404).json({ message: '...' }) 형태로 404 응답.
 //
-//   📦 성공 응답 예시 (200 OK)  — GET /todos/11111111-1111-1111-1111-111111111111
-//      { "id": "11111111-1111-1111-1111-111111111111", "title": "운동하기", "completed": false }
+//   📦 성공 응답 예시 (200 OK)  — GET /todos/V1StGXR8_Z5jdHi6B-myT
+//      { "id": "V1StGXR8_Z5jdHi6B-myT", "title": "운동하기", "completed": false }
 //
 //   📦 실패 응답 예시 (404 Not Found)  — 존재하지 않는 id 로 요청 시
 //      { "message": "id ... 인 할 일을 찾을 수 없어요." }
