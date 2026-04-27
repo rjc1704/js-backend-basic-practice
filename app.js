@@ -3,8 +3,7 @@ import express from 'express';
 const app = express();
 const PORT = 3000;
 
-// POST 요청의 JSON body 를 파싱하기 위한 미들웨어 (필수!)
-// 이 줄이 없으면 req.body 가 undefined 가 돼요.
+// POST/PATCH 요청의 JSON body 를 파싱하기 위한 미들웨어 (필수!)
 app.use(express.json());
 
 // 임시 데이터 (실습#6에서 MongoDB로 교체할 예정이에요!)
@@ -22,12 +21,10 @@ let todos = [
 app.get('/todos', (req, res) => {
   const { completed } = req.query;
 
-  // 쿼리스트링이 없으면 전체 응답
   if (completed === undefined) {
     return res.json(todos);
   }
 
-  // 쿼리스트링은 문자열로 들어오니 boolean 으로 변환해서 비교
   const completedBool = completed === 'true';
   const filtered = todos.filter((todo) => todo.completed === completedBool);
   res.json(filtered);
@@ -46,21 +43,47 @@ app.get('/todos/:id', (req, res) => {
 });
 
 // ─────────────────────────────────────────────────────────────
-// 실습#2: POST 엔드포인트 만들기
+// 실습#2: POST 엔드포인트 (✅ 완료)
 // ─────────────────────────────────────────────────────────────
 
-// TODO 1: POST /todos
-//   - req.body 에서 title 을 꺼내세요. (구조 분해 할당 추천)
-//   - title 이 없거나 빈 문자열이면 400 응답:
-//       res.status(400).json({ message: 'title은 필수입니다.' });
-//   - 새 id 만들기:
-//       todos 가 비어있으면 1
-//       그렇지 않으면 (현재 가장 큰 id + 1) — 힌트: Math.max(...todos.map(t => t.id))
-//   - completed 는 기본값 false 로 새 객체를 만드세요.
-//   - todos 배열에 push 하고, 201 상태코드와 함께 새 항목을 응답:
-//       res.status(201).json(newTodo);
+// POST /todos — 새 할 일 생성
+app.post('/todos', (req, res) => {
+  const { title } = req.body;
+
+  if (!title) {
+    return res.status(400).json({ message: 'title은 필수입니다.' });
+  }
+
+  const newId = todos.length > 0 ? Math.max(...todos.map((t) => t.id)) + 1 : 1;
+  const newTodo = { id: newId, title, completed: false };
+  todos.push(newTodo);
+
+  res.status(201).json(newTodo);
+});
+
+// ─────────────────────────────────────────────────────────────
+// 실습#3: PATCH & DELETE 엔드포인트 만들기
+// ─────────────────────────────────────────────────────────────
+
+// TODO 1: PATCH /todos/:id
+//   - id 로 todos 배열에서 인덱스를 찾으세요.
+//     힌트: const index = todos.findIndex(t => t.id === Number(req.params.id));
+//   - 못 찾으면 (index === -1) 404 응답.
+//   - 스프레드 연산자로 기존 데이터 위에 req.body 를 덮어쓰세요:
+//       todos[index] = { ...todos[index], ...req.body };
+//     이렇게 하면 보내지 않은 필드는 그대로 유지돼요!
+//   - 수정된 항목(todos[index])을 응답하세요.
 //
-// 작성 위치: 여기 아래에 app.post('/todos', ...) 코드를 작성해 주세요.
+// 작성 위치: 여기 아래에 app.patch('/todos/:id', ...) 코드를 작성해 주세요.
+
+
+// TODO 2: DELETE /todos/:id
+//   - id 로 인덱스를 찾으세요. 못 찾으면 404.
+//   - splice 로 배열에서 해당 항목을 제거하세요:
+//       const deleted = todos.splice(index, 1)[0];
+//   - 삭제된 항목을 응답하세요. (또는 res.status(204).send() 도 가능)
+//
+// 작성 위치: 여기 아래에 app.delete('/todos/:id', ...) 코드를 작성해 주세요.
 
 
 // ─────────────────────────────────────────────────────────────

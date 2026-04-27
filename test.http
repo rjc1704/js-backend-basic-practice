@@ -22,13 +22,40 @@ GET {{baseUrl}}/todos?completed=false
 
 
 ### ─────────────────────────────────────────────────
-### 실습#2: POST 엔드포인트 테스트
+### 실습#2: POST 엔드포인트 (✅ 완료)
 ### ─────────────────────────────────────────────────
 
-### TODO 1: POST /todos — title 없이 요청 → 400 확인
-###   힌트: Content-Type: application/json 헤더와 빈 body({}) 를 보내세요.
+### POST /todos — title 없이 요청 → 400 확인
+POST {{baseUrl}}/todos
+Content-Type: application/json
+
+{}
+
+### POST /todos — title 포함해서 요청 → 201 + 새 항목 확인
+POST {{baseUrl}}/todos
+Content-Type: application/json
+
+{
+  "title": "새 할 일 추가하기"
+}
 
 
-### TODO 2: POST /todos — title 포함해서 요청 → 201 + 새 항목 확인
-###   힌트: body 에 { "title": "새 할 일" } 같은 JSON을 보내세요.
+### ─────────────────────────────────────────────────
+### 실습#3: PATCH & DELETE 테스트
+### ─────────────────────────────────────────────────
+
+### TODO 1: PATCH /todos/:id — completed: true 로 수정
+###   힌트: PATCH {{baseUrl}}/todos/1 + body: { "completed": true }
+
+
+### TODO 2: PATCH /todos/:id — title 도 수정
+###   힌트: body 에 { "title": "수정된 제목" }
+
+
+### TODO 3: DELETE /todos/:id — 항목 삭제
+###   힌트: DELETE {{baseUrl}}/todos/1
+
+
+### TODO 4: 존재하지 않는 id로 PATCH/DELETE → 404 확인
+###   예: PATCH/DELETE /todos/999
 
