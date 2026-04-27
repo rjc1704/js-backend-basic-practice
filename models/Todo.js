@@ -41,3 +41,7 @@ const todoSchema = new mongoose.Schema(
 
 
 // 여기에 export default 작성!
+
+
+// 🌱 모델을 다 만들었으면, seed.js 를 채우고 `npm run seed` 를 실행하세요!
+//    실습#6 (CRUD) 에서 GET 으로 조회할 샘플 데이터가 DB 에 채워져요.
