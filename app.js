@@ -1,5 +1,5 @@
-import { randomUUID } from 'node:crypto';
 import express from 'express';
+import { nanoid } from 'nanoid';
 
 const app = express();
 const PORT = 3000;
@@ -9,11 +9,12 @@ app.use(express.json());
 
 // 임시 데이터 (실습#6에서 MongoDB로 교체할 예정이에요!)
 //
-// 💡 id 는 UUID 문자열이에요. 새 항목을 만들 때 randomUUID() 가 자동으로 생성합니다.
+// 💡 id 는 nanoid (21글자 영숫자) 문자열이에요.
+//    새 항목을 만들 때 nanoid() 가 자동으로 생성합니다.
 let todos = [
-  { id: '11111111-1111-1111-1111-111111111111', title: '운동하기', completed: false },
-  { id: '22222222-2222-2222-2222-222222222222', title: '책 읽기', completed: true },
-  { id: '33333333-3333-3333-3333-333333333333', title: 'Express 공부하기', completed: false },
+  { id: 'V1StGXR8_Z5jdHi6B-myT', title: '운동하기', completed: false },
+  { id: 'Uakgb_J5m9g-0JDMbcJqL', title: '책 읽기', completed: true },
+  { id: 'lXKNaG4yDvCBOpMlLzGCp', title: 'Express 공부하기', completed: false },
 ];
 
 // ─────────────────────────────────────────────────────────────
@@ -33,7 +34,7 @@ app.get('/todos', (req, res) => {
   res.json(filtered);
 });
 
-// GET /todos/:id — 단일 항목 조회 (id 는 UUID 문자열)
+// GET /todos/:id — 단일 항목 조회 (id 는 nanoid 문자열)
 app.get('/todos/:id', (req, res) => {
   const { id } = req.params;
   const todo = todos.find((t) => t.id === id);
@@ -49,7 +50,7 @@ app.get('/todos/:id', (req, res) => {
 // 실습#2: POST 엔드포인트 (✅ 완료)
 // ─────────────────────────────────────────────────────────────
 
-// POST /todos — 새 할 일 생성 (id 는 randomUUID 로 생성)
+// POST /todos — 새 할 일 생성 (id 는 nanoid 로 생성)
 app.post('/todos', (req, res) => {
   const { title } = req.body;
 
@@ -57,7 +58,7 @@ app.post('/todos', (req, res) => {
     return res.status(400).json({ message: 'title은 필수입니다.' });
   }
 
-  const newTodo = { id: randomUUID(), title, completed: false };
+  const newTodo = { id: nanoid(), title, completed: false };
   todos.push(newTodo);
 
   res.status(201).json(newTodo);
@@ -68,7 +69,7 @@ app.post('/todos', (req, res) => {
 // ─────────────────────────────────────────────────────────────
 
 // TODO 1: PATCH /todos/:id
-//   - id 로 todos 배열에서 인덱스를 찾으세요. (id 는 UUID 문자열, 그대로 비교!)
+//   - id 로 todos 배열에서 인덱스를 찾으세요. (id 는 nanoid 문자열, 그대로 비교!)
 //     힌트: const index = todos.findIndex(t => t.id === req.params.id);
 //   - 못 찾으면 (index === -1) 404 응답.
 //   - 스프레드 연산자로 기존 데이터 위에 req.body 를 덮어쓰세요:
@@ -83,9 +84,9 @@ app.post('/todos', (req, res) => {
 //      { "title": "수정된 제목", "completed": true }
 //
 //   📦 성공 응답 예시 (200 OK)
-//      — PATCH /todos/11111111-1111-1111-1111-111111111111 + body { "completed": true }
+//      — PATCH /todos/V1StGXR8_Z5jdHi6B-myT + body { "completed": true }
 //      {
-//        "id": "11111111-1111-1111-1111-111111111111",
+//        "id": "V1StGXR8_Z5jdHi6B-myT",
 //        "title": "운동하기",
 //        "completed": true
 //      }
@@ -103,11 +104,11 @@ app.post('/todos', (req, res) => {
 //   - 삭제된 항목을 응답하세요. (또는 res.status(204).send() 도 가능)
 //
 //   📦 성공 응답 예시 (200 OK)
-//      — DELETE /todos/11111111-1111-1111-1111-111111111111
+//      — DELETE /todos/V1StGXR8_Z5jdHi6B-myT
 //      {
 //        "message": "삭제되었어요.",
 //        "data": {
-//          "id": "11111111-1111-1111-1111-111111111111",
+//          "id": "V1StGXR8_Z5jdHi6B-myT",
 //          "title": "운동하기",
 //          "completed": false
 //        }
