@@ -1,3 +1,4 @@
+import { randomUUID } from 'node:crypto';
 import dotenv from 'dotenv';
 import express from 'express';
 import connectDB from './db.js';
@@ -13,9 +14,9 @@ connectDB();
 
 // 임시 데이터 (실습#6에서 MongoDB 로 교체할 예정이에요!)
 let todos = [
-  { id: 1, title: '운동하기', completed: false },
-  { id: 2, title: '책 읽기', completed: true },
-  { id: 3, title: 'Express 공부하기', completed: false },
+  { id: '11111111-1111-1111-1111-111111111111', title: '운동하기', completed: false },
+  { id: '22222222-2222-2222-2222-222222222222', title: '책 읽기', completed: true },
+  { id: '33333333-3333-3333-3333-333333333333', title: 'Express 공부하기', completed: false },
 ];
 
 // ─────────────────────────────────────────────────────────────
@@ -35,7 +36,7 @@ app.get('/todos', (req, res) => {
 });
 
 app.get('/todos/:id', (req, res) => {
-  const id = Number(req.params.id);
+  const { id } = req.params;
   const todo = todos.find((t) => t.id === id);
 
   if (!todo) {
@@ -56,8 +57,7 @@ app.post('/todos', (req, res) => {
     return res.status(400).json({ message: 'title은 필수입니다.' });
   }
 
-  const newId = todos.length > 0 ? Math.max(...todos.map((t) => t.id)) + 1 : 1;
-  const newTodo = { id: newId, title, completed: false };
+  const newTodo = { id: randomUUID(), title, completed: false };
   todos.push(newTodo);
 
   res.status(201).json(newTodo);
@@ -68,7 +68,7 @@ app.post('/todos', (req, res) => {
 // ─────────────────────────────────────────────────────────────
 
 app.patch('/todos/:id', (req, res) => {
-  const id = Number(req.params.id);
+  const { id } = req.params;
   const index = todos.findIndex((t) => t.id === id);
 
   if (index === -1) {
@@ -80,7 +80,7 @@ app.patch('/todos/:id', (req, res) => {
 });
 
 app.delete('/todos/:id', (req, res) => {
-  const id = Number(req.params.id);
+  const { id } = req.params;
   const index = todos.findIndex((t) => t.id === id);
 
   if (index === -1) {
