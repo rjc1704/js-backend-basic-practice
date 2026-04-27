@@ -113,6 +113,15 @@ app.delete('/todos/:id', async (req, res) => {
 //             if (!todo) return res.status(404).json({ message: '...' });
 //     - POST 의 ValidationError 도 asyncHandler 안에서 400 으로 자동 처리됩니다.
 //
+//   📦 응답 형식은 실습#6 과 동일해요!
+//      성공 응답은 위 try-catch 버전과 똑같은 JSON 을 돌려주면 됩니다.
+//      에러 응답은 asyncHandler 가 자동 처리:
+//        - ValidationError (400)  → { "message": "Todo validation failed: ..." }
+//        - CastError (404)        → { "message": "Cannot find given id." }
+//        - 그 외 (500)            → { "message": "..." }
+//      "id 형식은 맞지만 결과가 null" 케이스만 라우트 안에서 직접 404 응답:
+//        - { "message": "할 일을 찾을 수 없어요." }
+//
 // 작성 위치: 위의 try-catch 버전 5개를 모두 삭제하고 여기에 새로 작성하세요!
 
 

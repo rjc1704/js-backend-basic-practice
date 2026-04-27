@@ -29,6 +29,17 @@
 //       const todos = await Todo.find();
 //       res.json(todos);  // try-catch 없이 깔끔!
 //     }));
+//
+//   📦 ValidationError 응답 예시 (400 Bad Request)
+//      — POST /todos 에 title 없이 보내면 자동으로 이렇게 응답돼요
+//      { "message": "Todo validation failed: title: title 은 필수예요." }
+//
+//   📦 CastError 응답 예시 (404 Not Found)
+//      — GET /todos/이건_잘못된_id 같이 ObjectId 형식이 아닐 때
+//      { "message": "Cannot find given id." }
+//
+//   📦 그 외 에러 응답 예시 (500 Internal Server Error)
+//      { "message": "..." }
 
 export const asyncHandler = (fn) => {
   // 여기를 채우세요!
