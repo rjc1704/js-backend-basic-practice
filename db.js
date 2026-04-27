@@ -8,15 +8,14 @@ import mongoose from 'mongoose';
 //   5. 프로젝트 루트에 .env 파일을 만들고 MONGODB_URI 에 붙여넣기
 //      (.env.example 파일을 참고하세요)
 
-// TODO: connectDB 함수의 본문을 채우세요.
-//   - mongoose.connect(process.env.MONGODB_URI) 를 await 하세요.
-//   - 성공하면: console.log('✅ MongoDB 연결 성공!')
-//   - 실패하면: console.error('❌ MongoDB 연결 실패:', error.message) 후
-//               process.exit(1) 로 서버 종료
-//   - try-catch 로 감싸야 해요!
-
 async function connectDB() {
-  // 여기를 채우세요!
+  try {
+    await mongoose.connect(process.env.MONGODB_URI);
+    console.log('✅ MongoDB 연결 성공!');
+  } catch (error) {
+    console.error('❌ MongoDB 연결 실패:', error.message);
+    process.exit(1); // 연결 실패 시 서버 종료
+  }
 }
 
 export default connectDB;

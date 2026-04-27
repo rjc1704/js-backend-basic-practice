@@ -1,19 +1,15 @@
-// TODO 1: dotenv 와 connectDB 를 import 하세요.
-//   - import dotenv from 'dotenv';
-//   - import connectDB from './db.js';
+import dotenv from 'dotenv';
 import express from 'express';
+import connectDB from './db.js';
 
-// TODO 2: dotenv.config() 를 호출해서 .env 파일을 로드하세요.
-//   ⚠️ 주의: 다른 코드보다 "맨 먼저" 실행되어야 해요!
-//          (그래야 process.env.MONGODB_URI 같은 값을 다른 파일에서 읽을 수 있음)
-
+// .env 파일 로드 (반드시 다른 코드보다 먼저!)
+dotenv.config();
 
 const app = express();
 app.use(express.json());
 
-// TODO 3: connectDB() 를 호출해서 MongoDB 에 연결하세요.
-//   서버를 띄우기 전에 DB 부터 연결하는 게 자연스러워요.
-
+// MongoDB 연결
+connectDB();
 
 // 임시 데이터 (실습#6에서 MongoDB 로 교체할 예정이에요!)
 let todos = [
@@ -98,10 +94,7 @@ app.delete('/todos/:id', (req, res) => {
 // ─────────────────────────────────────────────────────────────
 // 서버 시작
 // ─────────────────────────────────────────────────────────────
-
-// TODO 4: PORT 를 process.env.PORT || 3000 으로 변경하세요.
-//   환경변수에 PORT 값이 있으면 그걸 사용하고, 없으면 3000 을 기본값으로.
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
   console.log(`서버가 http://localhost:${PORT} 에서 실행 중이에요! 🚀`);
