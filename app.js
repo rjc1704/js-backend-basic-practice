@@ -1,8 +1,8 @@
 // TODO 1: dotenv 와 connectDB 를 import 하세요.
 //   - import dotenv from 'dotenv';
 //   - import connectDB from './db.js';
-import { randomUUID } from 'node:crypto';
 import express from 'express';
+import { nanoid } from 'nanoid';
 
 // TODO 2: dotenv.config() 를 호출해서 .env 파일을 로드하세요.
 //   ⚠️ 주의: 다른 코드보다 "맨 먼저" 실행되어야 해요!
@@ -18,9 +18,9 @@ app.use(express.json());
 
 // 임시 데이터 (실습#6에서 MongoDB 로 교체할 예정이에요!)
 let todos = [
-  { id: '11111111-1111-1111-1111-111111111111', title: '운동하기', completed: false },
-  { id: '22222222-2222-2222-2222-222222222222', title: '책 읽기', completed: true },
-  { id: '33333333-3333-3333-3333-333333333333', title: 'Express 공부하기', completed: false },
+  { id: 'V1StGXR8_Z5jdHi6B-myT', title: '운동하기', completed: false },
+  { id: 'Uakgb_J5m9g-0JDMbcJqL', title: '책 읽기', completed: true },
+  { id: 'lXKNaG4yDvCBOpMlLzGCp', title: 'Express 공부하기', completed: false },
 ];
 
 // ─────────────────────────────────────────────────────────────
@@ -61,7 +61,7 @@ app.post('/todos', (req, res) => {
     return res.status(400).json({ message: 'title은 필수입니다.' });
   }
 
-  const newTodo = { id: randomUUID(), title, completed: false };
+  const newTodo = { id: nanoid(), title, completed: false };
   todos.push(newTodo);
 
   res.status(201).json(newTodo);
