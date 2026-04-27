@@ -37,6 +37,21 @@ connectDB();
 //   - 성공: res.json(todos)
 //   - catch: res.status(500).json({ message: error.message })
 //
+//   📦 성공 응답 예시 (200 OK)  — Mongoose 가 _id, timestamps 를 자동으로 붙여줘요!
+//      [
+//        {
+//          "_id": "65f1a2b3c4d5e6f7a8b9c0d1",
+//          "title": "운동하기",
+//          "completed": false,
+//          "createdAt": "2026-04-27T10:00:00.000Z",
+//          "updatedAt": "2026-04-27T10:00:00.000Z",
+//          "__v": 0
+//        }
+//      ]
+//
+//   📦 실패 응답 예시 (500 Internal Server Error)
+//      { "message": "..." }
+//
 // 작성 위치: 여기 아래에 app.get('/todos', async (req, res) => { ... })
 
 
@@ -46,6 +61,22 @@ connectDB();
 //     예) if (!todo) return res.status(404).json({ message: '...' });
 //   - 잘못된 ObjectId 형식이면 catch 블록으로 들어와요 → 400 응답:
 //       res.status(400).json({ message: '잘못된 id 형식이에요.' })
+//
+//   📦 성공 응답 예시 (200 OK)
+//      {
+//        "_id": "65f1a2b3c4d5e6f7a8b9c0d1",
+//        "title": "운동하기",
+//        "completed": false,
+//        "createdAt": "2026-04-27T10:00:00.000Z",
+//        "updatedAt": "2026-04-27T10:00:00.000Z",
+//        "__v": 0
+//      }
+//
+//   📦 실패 응답 예시 (404 Not Found)  — id 형식은 맞지만 없는 항목
+//      { "message": "할 일을 찾을 수 없어요." }
+//
+//   📦 실패 응답 예시 (400 Bad Request)  — id 형식이 잘못된 경우 (CastError)
+//      { "message": "잘못된 id 형식이에요." }
 
 
 // TODO 3: POST /todos  (async + try-catch 직접 작성!)
@@ -54,6 +85,22 @@ connectDB();
 //   - 성공: res.status(201).json(newTodo)
 //   - catch: res.status(400).json({ message: error.message })
 //     (Mongoose 의 ValidationError 메시지가 친절하게 들어 있어요)
+//
+//   📦 요청 body 예시
+//      { "title": "MongoDB 공부하기" }
+//
+//   📦 성공 응답 예시 (201 Created)
+//      {
+//        "_id": "65f1a2b3c4d5e6f7a8b9c0d2",
+//        "title": "MongoDB 공부하기",
+//        "completed": false,
+//        "createdAt": "2026-04-27T10:00:00.000Z",
+//        "updatedAt": "2026-04-27T10:00:00.000Z",
+//        "__v": 0
+//      }
+//
+//   📦 실패 응답 예시 (400 Bad Request)  — title 누락 시 ValidationError
+//      { "message": "Todo validation failed: title: title 은 필수예요." }
 
 
 // TODO 4: PATCH /todos/:id  (async + try-catch 직접 작성!)
@@ -62,6 +109,22 @@ connectDB();
 //       runValidators: true  → 수정 시에도 스키마 검증 실행
 //   - 결과가 null 이면 404.
 //   - catch: res.status(400).json({ message: error.message })
+//
+//   📦 요청 body 예시
+//      { "completed": true }
+//
+//   📦 성공 응답 예시 (200 OK)  — updatedAt 이 갱신된 점에 주목!
+//      {
+//        "_id": "65f1a2b3c4d5e6f7a8b9c0d1",
+//        "title": "운동하기",
+//        "completed": true,
+//        "createdAt": "2026-04-27T10:00:00.000Z",
+//        "updatedAt": "2026-04-27T10:05:00.000Z",
+//        "__v": 0
+//      }
+//
+//   📦 실패 응답 예시 (404 Not Found)
+//      { "message": "할 일을 찾을 수 없어요." }
 
 
 // TODO 5: DELETE /todos/:id  (async + try-catch 직접 작성!)
@@ -69,6 +132,22 @@ connectDB();
 //   - 결과가 null 이면 404.
 //   - 성공: res.json({ message: '삭제되었어요.', data: deleted })
 //   - catch: res.status(500).json({ message: error.message })
+//
+//   📦 성공 응답 예시 (200 OK)
+//      {
+//        "message": "삭제되었어요.",
+//        "data": {
+//          "_id": "65f1a2b3c4d5e6f7a8b9c0d1",
+//          "title": "운동하기",
+//          "completed": false,
+//          "createdAt": "2026-04-27T10:00:00.000Z",
+//          "updatedAt": "2026-04-27T10:00:00.000Z",
+//          "__v": 0
+//        }
+//      }
+//
+//   📦 실패 응답 예시 (404 Not Found)
+//      { "message": "할 일을 찾을 수 없어요." }
 
 
 // ─────────────────────────────────────────────────────────────
