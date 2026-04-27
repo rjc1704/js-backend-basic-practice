@@ -74,6 +74,18 @@ app.post('/todos', (req, res) => {
 //     이렇게 하면 보내지 않은 필드는 그대로 유지돼요!
 //   - 수정된 항목(todos[index])을 응답하세요.
 //
+//   📦 요청 body 예시  — completed 만 바꾸고 싶을 때
+//      { "completed": true }
+//
+//   📦 요청 body 예시  — title 도 함께 바꾸고 싶을 때
+//      { "title": "수정된 제목", "completed": true }
+//
+//   📦 성공 응답 예시 (200 OK)  — PATCH /todos/1 + body { "completed": true }
+//      { "id": 1, "title": "운동하기", "completed": true }
+//
+//   📦 실패 응답 예시 (404 Not Found)
+//      { "message": "id 999 인 할 일을 찾을 수 없어요." }
+//
 // 작성 위치: 여기 아래에 app.patch('/todos/:id', ...) 코드를 작성해 주세요.
 
 
@@ -82,6 +94,15 @@ app.post('/todos', (req, res) => {
 //   - splice 로 배열에서 해당 항목을 제거하세요:
 //       const deleted = todos.splice(index, 1)[0];
 //   - 삭제된 항목을 응답하세요. (또는 res.status(204).send() 도 가능)
+//
+//   📦 성공 응답 예시 (200 OK)  — DELETE /todos/1
+//      {
+//        "message": "삭제되었어요.",
+//        "data": { "id": 1, "title": "운동하기", "completed": false }
+//      }
+//
+//   📦 실패 응답 예시 (404 Not Found)
+//      { "message": "id 999 인 할 일을 찾을 수 없어요." }
 //
 // 작성 위치: 여기 아래에 app.delete('/todos/:id', ...) 코드를 작성해 주세요.
 
