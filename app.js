@@ -1,3 +1,4 @@
+import { randomUUID } from 'node:crypto';
 import express from 'express';
 
 const app = express();
@@ -7,10 +8,12 @@ const PORT = 3000;
 app.use(express.json());
 
 // 임시 데이터 (실습#6에서 MongoDB로 교체할 예정이에요!)
+//
+// 💡 id 는 UUID 문자열이에요. 새 항목을 만들 때 randomUUID() 가 자동으로 생성합니다.
 let todos = [
-  { id: 1, title: '운동하기', completed: false },
-  { id: 2, title: '책 읽기', completed: true },
-  { id: 3, title: 'Express 공부하기', completed: false },
+  { id: '11111111-1111-1111-1111-111111111111', title: '운동하기', completed: false },
+  { id: '22222222-2222-2222-2222-222222222222', title: '책 읽기', completed: true },
+  { id: '33333333-3333-3333-3333-333333333333', title: 'Express 공부하기', completed: false },
 ];
 
 // ─────────────────────────────────────────────────────────────
@@ -30,9 +33,9 @@ app.get('/todos', (req, res) => {
   res.json(filtered);
 });
 
-// GET /todos/:id — 단일 항목 조회
+// GET /todos/:id — 단일 항목 조회 (id 는 UUID 문자열)
 app.get('/todos/:id', (req, res) => {
-  const id = Number(req.params.id);
+  const { id } = req.params;
   const todo = todos.find((t) => t.id === id);
 
   if (!todo) {
@@ -46,7 +49,7 @@ app.get('/todos/:id', (req, res) => {
 // 실습#2: POST 엔드포인트 (✅ 완료)
 // ─────────────────────────────────────────────────────────────
 
-// POST /todos — 새 할 일 생성
+// POST /todos — 새 할 일 생성 (id 는 randomUUID 로 생성)
 app.post('/todos', (req, res) => {
   const { title } = req.body;
 
@@ -54,8 +57,7 @@ app.post('/todos', (req, res) => {
     return res.status(400).json({ message: 'title은 필수입니다.' });
   }
 
-  const newId = todos.length > 0 ? Math.max(...todos.map((t) => t.id)) + 1 : 1;
-  const newTodo = { id: newId, title, completed: false };
+  const newTodo = { id: randomUUID(), title, completed: false };
   todos.push(newTodo);
 
   res.status(201).json(newTodo);
@@ -66,8 +68,8 @@ app.post('/todos', (req, res) => {
 // ─────────────────────────────────────────────────────────────
 
 // TODO 1: PATCH /todos/:id
-//   - id 로 todos 배열에서 인덱스를 찾으세요.
-//     힌트: const index = todos.findIndex(t => t.id === Number(req.params.id));
+//   - id 로 todos 배열에서 인덱스를 찾으세요. (id 는 UUID 문자열, 그대로 비교!)
+//     힌트: const index = todos.findIndex(t => t.id === req.params.id);
 //   - 못 찾으면 (index === -1) 404 응답.
 //   - 스프레드 연산자로 기존 데이터 위에 req.body 를 덮어쓰세요:
 //       todos[index] = { ...todos[index], ...req.body };
@@ -80,11 +82,16 @@ app.post('/todos', (req, res) => {
 //   📦 요청 body 예시  — title 도 함께 바꾸고 싶을 때
 //      { "title": "수정된 제목", "completed": true }
 //
-//   📦 성공 응답 예시 (200 OK)  — PATCH /todos/1 + body { "completed": true }
-//      { "id": 1, "title": "운동하기", "completed": true }
+//   📦 성공 응답 예시 (200 OK)
+//      — PATCH /todos/11111111-1111-1111-1111-111111111111 + body { "completed": true }
+//      {
+//        "id": "11111111-1111-1111-1111-111111111111",
+//        "title": "운동하기",
+//        "completed": true
+//      }
 //
 //   📦 실패 응답 예시 (404 Not Found)
-//      { "message": "id 999 인 할 일을 찾을 수 없어요." }
+//      { "message": "id ... 인 할 일을 찾을 수 없어요." }
 //
 // 작성 위치: 여기 아래에 app.patch('/todos/:id', ...) 코드를 작성해 주세요.
 
@@ -95,14 +102,19 @@ app.post('/todos', (req, res) => {
 //       const deleted = todos.splice(index, 1)[0];
 //   - 삭제된 항목을 응답하세요. (또는 res.status(204).send() 도 가능)
 //
-//   📦 성공 응답 예시 (200 OK)  — DELETE /todos/1
+//   📦 성공 응답 예시 (200 OK)
+//      — DELETE /todos/11111111-1111-1111-1111-111111111111
 //      {
 //        "message": "삭제되었어요.",
-//        "data": { "id": 1, "title": "운동하기", "completed": false }
+//        "data": {
+//          "id": "11111111-1111-1111-1111-111111111111",
+//          "title": "운동하기",
+//          "completed": false
+//        }
 //      }
 //
 //   📦 실패 응답 예시 (404 Not Found)
-//      { "message": "id 999 인 할 일을 찾을 수 없어요." }
+//      { "message": "id ... 인 할 일을 찾을 수 없어요." }
 //
 // 작성 위치: 여기 아래에 app.delete('/todos/:id', ...) 코드를 작성해 주세요.
 
