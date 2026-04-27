@@ -1,0 +1,20 @@
+{
+  "name": "js-backend-practice",
+  "version": "1.0.0",
+  "description": "Express + MongoDB 투두리스트 단계별 실습",
+  "main": "app.js",
+  "type": "module",
+  "scripts": {
+    "start": "node app.js",
+    "dev": "nodemon app.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^5.2.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.14"
+  }
+}
