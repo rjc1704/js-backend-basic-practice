@@ -1,8 +1,8 @@
-import dotenv from 'dotenv';
-import express from 'express';
-import { nanoid } from 'nanoid';
-import connectDB from './db.js';
-import Todo from './models/Todo.js';
+import dotenv from "dotenv";
+import express from "express";
+import { nanoid } from "nanoid";
+import connectDB from "./db.js";
+import Todo from "./models/Todo.js";
 
 // .env 파일 로드 (반드시 다른 코드보다 먼저!)
 dotenv.config();
@@ -36,27 +36,17 @@ connectDB();
 
 // 임시 데이터 (✂️ 5개 라우트 다 바꾸고 나면 이 배열도 삭제!)
 let todos = [
-  { id: 'V1StGXR8_Z5jdHi6B-myT', title: '운동하기', completed: false },
-  { id: 'Uakgb_J5m9g-0JDMbcJqL', title: '책 읽기', completed: true },
-  { id: 'lXKNaG4yDvCBOpMlLzGCp', title: 'Express 공부하기', completed: false },
+  { id: "V1StGXR8_Z5jdHi6B-myT", title: "운동하기", completed: false },
+  { id: "Uakgb_J5m9g-0JDMbcJqL", title: "책 읽기", completed: true },
+  { id: "lXKNaG4yDvCBOpMlLzGCp", title: "Express 공부하기", completed: false },
 ];
 
 // ─────────────────────────────────────────────────────────────
 // TODO 1: GET /todos 를 MongoDB 기반으로 바꾸세요.
 //
 //   📌 바꿀 방향
-//      async (req, res) => {
-//        try {
-//          const filter = {};
-//          if (req.query.completed !== undefined) {
-//            filter.completed = req.query.completed === 'true';
-//          }
-//          const docs = await Todo.find(filter);
-//          res.json(docs);
-//        } catch (error) {
-//          res.status(500).json({ message: error.message });
-//        }
-//      }
+//      - Todo.find() 로 조회.
+//      - Todo.find({}) 로 query 조건 추가 가능.
 //
 //   📦 성공 응답 예시 (200 OK)  — Mongoose 가 _id, timestamps 를 자동 부여
 //      [
@@ -70,14 +60,14 @@ let todos = [
 //        }
 //      ]
 // ─────────────────────────────────────────────────────────────
-app.get('/todos', (req, res) => {
+app.get("/todos", (req, res) => {
   const { completed } = req.query;
 
   if (completed === undefined) {
     return res.json(todos);
   }
 
-  const completedBool = completed === 'true';
+  const completedBool = completed === "true";
   const filtered = todos.filter((todo) => todo.completed === completedBool);
   res.json(filtered);
 });
@@ -105,12 +95,14 @@ app.get('/todos', (req, res) => {
 //   📦 실패 응답 예시 (400 Bad Request)  — id 형식 자체가 잘못된 경우 (CastError)
 //      { "message": "잘못된 id 형식이에요." }
 // ─────────────────────────────────────────────────────────────
-app.get('/todos/:id', (req, res) => {
+app.get("/todos/:id", (req, res) => {
   const { id } = req.params;
   const todo = todos.find((t) => t.id === id);
 
   if (!todo) {
-    return res.status(404).json({ message: `id ${id} 인 할 일을 찾을 수 없어요.` });
+    return res
+      .status(404)
+      .json({ message: `id ${id} 인 할 일을 찾을 수 없어요.` });
   }
 
   res.json(todo);
@@ -140,11 +132,11 @@ app.get('/todos/:id', (req, res) => {
 //   📦 실패 응답 예시 (400 Bad Request)  — title 누락 시 ValidationError
 //      { "message": "Todo validation failed: title: title 은 필수예요." }
 // ─────────────────────────────────────────────────────────────
-app.post('/todos', (req, res) => {
+app.post("/todos", (req, res) => {
   const { title } = req.body;
 
   if (!title) {
-    return res.status(400).json({ message: 'title은 필수입니다.' });
+    return res.status(400).json({ message: "title은 필수입니다." });
   }
 
   const newTodo = { id: nanoid(), title, completed: false };
@@ -177,12 +169,14 @@ app.post('/todos', (req, res) => {
 //   📦 실패 응답 예시 (404 Not Found)
 //      { "message": "할 일을 찾을 수 없어요." }
 // ─────────────────────────────────────────────────────────────
-app.patch('/todos/:id', (req, res) => {
+app.patch("/todos/:id", (req, res) => {
   const { id } = req.params;
   const index = todos.findIndex((t) => t.id === id);
 
   if (index === -1) {
-    return res.status(404).json({ message: `id ${id} 인 할 일을 찾을 수 없어요.` });
+    return res
+      .status(404)
+      .json({ message: `id ${id} 인 할 일을 찾을 수 없어요.` });
   }
 
   todos[index] = { ...todos[index], ...req.body };
@@ -213,16 +207,18 @@ app.patch('/todos/:id', (req, res) => {
 //   📦 실패 응답 예시 (404 Not Found)
 //      { "message": "할 일을 찾을 수 없어요." }
 // ─────────────────────────────────────────────────────────────
-app.delete('/todos/:id', (req, res) => {
+app.delete("/todos/:id", (req, res) => {
   const { id } = req.params;
   const index = todos.findIndex((t) => t.id === id);
 
   if (index === -1) {
-    return res.status(404).json({ message: `id ${id} 인 할 일을 찾을 수 없어요.` });
+    return res
+      .status(404)
+      .json({ message: `id ${id} 인 할 일을 찾을 수 없어요.` });
   }
 
   const deleted = todos.splice(index, 1)[0];
-  res.json({ message: '삭제되었어요.', data: deleted });
+  res.json({ message: "삭제되었어요.", data: deleted });
 });
 
 // ─────────────────────────────────────────────────────────────
