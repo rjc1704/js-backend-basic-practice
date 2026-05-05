@@ -9,7 +9,7 @@ dotenv.config();
 const app = express();
 app.use(
   cors({
-    origin: "https://google.com",
+    origin: "https://www.google.com",
   }),
 );
 app.use(express.json());
