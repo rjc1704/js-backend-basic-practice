@@ -3,7 +3,7 @@
 
 ### todoId 변수 — POST 응답에서 _id 값을 복사해서 여기에 붙여넣고 사용하세요.
 ###   ⚠️ id 가 더 이상 숫자가 아니라 MongoDB ObjectId 문자열입니다!
-@todoId = 여기에_ObjectId를_붙여넣으세요
+@todoId = 69f9d6385e10fdeb75eb1c92
 
 ### ─────────────────────────────────────────────────
 ### 실습#6: MongoDB 기반 CRUD 테스트
@@ -32,7 +32,7 @@ POST {{baseUrl}}/todos
 Content-Type: application/json
 
 {
-  "title": "MongoDB 로 투두리스트 만들기"
+  "title": "MongoDB2 로 투두리스트 만들기"
 }
 
 ### 할 일 수정 (completed: true 로 변경)

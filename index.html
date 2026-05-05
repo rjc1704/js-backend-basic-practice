@@ -8,9 +8,12 @@
   <body>
     <script>
       (async function () {
-        const res = await fetch(
-          "https://js-backend-basic-practice.onrender.com/todos",
-        );
+        const url = "https://js-backend-basic-practice.onrender.com/todos";
+        const res = await fetch(`${url}/69f9d6385e10fdeb75eb1c92`, {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ title: "1234!!! 로 투두리스트 만들기" }),
+        });
         const data = await res.json();
         console.log("data::", data);
       })();
