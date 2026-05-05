@@ -1,5 +1,5 @@
 ### baseUrl 변수 — 나중에 배포 주소로 바꿀 때 이 한 줄만 수정하면 돼요!
-@baseUrl = http://localhost:3000
+@baseUrl = https://js-backend-basic-practice.onrender.com
 
 ### todoId 변수 — POST 응답에서 _id 값을 복사해서 여기에 붙여넣고 사용하세요.
 ###   ⚠️ id 가 더 이상 숫자가 아니라 MongoDB ObjectId 문자열입니다!

@@ -1,12 +1,13 @@
-import dotenv from 'dotenv';
-import express from 'express';
-import connectDB from './db.js';
-import Todo from './models/Todo.js';
-import { asyncHandler } from './utils/asyncHandler.js';
-
+import dotenv from "dotenv";
+import express from "express";
+import connectDB from "./db.js";
+import Todo from "./models/Todo.js";
+import { asyncHandler } from "./utils/asyncHandler.js";
+import cors from "cors";
 dotenv.config();
 
 const app = express();
+app.use(cors());
 app.use(express.json());
 
 connectDB();
@@ -18,59 +19,59 @@ connectDB();
 // ─────────────────────────────────────────────────────────────
 
 app.get(
-  '/todos',
+  "/todos",
   asyncHandler(async (req, res) => {
     const filter = {};
     if (req.query.completed !== undefined) {
-      filter.completed = req.query.completed === 'true';
+      filter.completed = req.query.completed === "true";
     }
     const todos = await Todo.find(filter);
     res.json(todos);
-  })
+  }),
 );
 
 app.get(
-  '/todos/:id',
+  "/todos/:id",
   asyncHandler(async (req, res) => {
     const todo = await Todo.findById(req.params.id);
     if (!todo) {
-      return res.status(404).json({ message: '할 일을 찾을 수 없어요.' });
+      return res.status(404).json({ message: "할 일을 찾을 수 없어요." });
     }
     res.json(todo);
-  })
+  }),
 );
 
 app.post(
-  '/todos',
+  "/todos",
   asyncHandler(async (req, res) => {
     const newTodo = await Todo.create(req.body);
     res.status(201).json(newTodo);
-  })
+  }),
 );
 
 app.patch(
-  '/todos/:id',
+  "/todos/:id",
   asyncHandler(async (req, res) => {
     const updated = await Todo.findByIdAndUpdate(req.params.id, req.body, {
       new: true,
       runValidators: true,
     });
     if (!updated) {
-      return res.status(404).json({ message: '할 일을 찾을 수 없어요.' });
+      return res.status(404).json({ message: "할 일을 찾을 수 없어요." });
     }
     res.json(updated);
-  })
+  }),
 );
 
 app.delete(
-  '/todos/:id',
+  "/todos/:id",
   asyncHandler(async (req, res) => {
     const deleted = await Todo.findByIdAndDelete(req.params.id);
     if (!deleted) {
-      return res.status(404).json({ message: '할 일을 찾을 수 없어요.' });
+      return res.status(404).json({ message: "할 일을 찾을 수 없어요." });
     }
-    res.json({ message: '삭제되었어요.', data: deleted });
-  })
+    res.json({ message: "삭제되었어요.", data: deleted });
+  }),
 );
 
 const PORT = process.env.PORT || 3000;
