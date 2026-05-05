@@ -25,6 +25,7 @@ connectDB();
 app.get(
   "/todos",
   asyncHandler(async (req, res) => {
+    console.log("GET /todos 요청받음!");
     const filter = {};
     if (req.query.completed !== undefined) {
       filter.completed = req.query.completed === "true";
